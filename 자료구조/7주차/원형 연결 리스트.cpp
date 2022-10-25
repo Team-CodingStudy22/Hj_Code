@@ -16,11 +16,9 @@ void print_list(ListNode* head) {
 
 	p = head->link;
 
-	if (head != head->link) {
-		do {
-			printf("%d->", p->data);
-			p = p->link;
-		} while (p != head);
+	while (p != head) {
+		printf("%d->", p->data);
+		p = p->link;
 	}
 
 	printf("%d->", p->data);
@@ -86,55 +84,62 @@ ListNode* delete_first(ListNode* head) {
 
 
 ListNode* delete_last(ListNode* head) {
-	ListNode* temp;
-	ListNode* p = head;
+	ListNode* removed = head;
+	ListNode* p = head->link;
 
 	if (head == NULL) {
 		printf("리스트가 비어 삭제를 못 함\n");
 		return NULL;
 	}
 	else if (head == head->link) {
-		temp = head;
+		removed = head;
 		head = NULL;
+		free(removed);
 	}
 	else {
-		temp = head;
-		do {
+		while (p->link != head)
 			p = p->link;
-		} while (p->link != head);
-		p->link = temp->link;
+		p->link = head->link;
 		head = p;
+		free(removed);
 	}
-	free(temp);
+	
 	return head;
 }
 
 
-ListNode* search(ListNode* head, element data) {
+int search(ListNode* head, element data) {
 	ListNode* p = head;
+	int count = 0;
+	if (head == NULL) return NULL;
 
-	//do while문으로 하면 안됨! 
-	//먼저 1회 실행하기 때문에 오류 뜸 
-	while(p!=head){
+	do {
 		if (p->data == data)
-			return p;
+			return count;
+		count++;
 		p = p->link;
-	}
+	} while (p != head);
 	return NULL;
 }
 
 element get_size(ListNode* head) {
 
-	ListNode* p=head;
-	int count = 1;
+	ListNode* p;
+	int count = 0;
 
+	//연결리스트가 비어있어도 1이 return 될 수 있음 
+
+	if (head == NULL) return 0;
+
+	p = head->link;
 	do {
-		p = p->link;
 		count++;
-	} while (p->link != head);
+		p = p->link;
+	} while (p != head->link);
 
 	free(p);
 	return count;
+
 }
 
 int main(void) {
@@ -157,7 +162,7 @@ int main(void) {
 	print_list(head);
 
 	int num = 20;
-	printf("%d은 %d번째에 있습니다\n", num, search(head, 20));
+	printf("\n%d은 %d번째에 있습니다\n", num, search(head, 20));
 
 	printf("해당 리스트의 크기는 %d입니다", get_size(head));
 

@@ -22,6 +22,7 @@ void print_dlist(DListNode* phead) {
 		printf("<-| |%d| |-> ", p->data);
 	}
 	printf("\n");
+}
 
 //새로운 데이터를 노드 before의 오른쪽에 삽입한다.
 void dinsert(DListNode* before, element data) {
@@ -46,6 +47,7 @@ void ddelete(DListNode* head, DListNode* removed) {
 }
 
 void print_reverse_dlist(DListNode* head) {
+	///reverse 출력은 llink에서만 시작하면 된다 
 	DListNode* p;
 	for (p = head->llink; p != head; p = p->llink) {
 		printf("<-| |%d| |-> ", p->data);
@@ -53,13 +55,18 @@ void print_reverse_dlist(DListNode* head) {
 	printf("\n");
 }
 
-DListNode* search(DListNode* head, element data) {
+
+int search(DListNode* head, element data) {
 	DListNode* p = head;
-	while (p->rlink != head) {
-		if (p->data == data)
-			return p;
-		p = p->rlink;
-	}
+
+	do {
+		if (p->data = data)
+			//성공 시 return 
+			return 1;
+		p = p->llink;
+	} while (p != head);
+
+	//실패 시 return 
 	return NULL;
 }
 
